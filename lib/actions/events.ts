@@ -47,6 +47,9 @@ function parseRsvp(formData: FormData){
 export async function createEventAction(formData: FormData){
 
     const session = await getSession();
+    if (!session.data) {
+        throw new Error("Unauthorized");
+    }
     const userId = session.data.user.id;
     const input = parseCreateEvent(formData);
     try{
@@ -72,6 +75,9 @@ export async function createEventAction(formData: FormData){
 export async function createInviteLinkAction(eventId: string){
 
     const session = await getSession();
+    if (!session.data) {
+        throw new Error("Unauthorized");
+    }
     const userId = session.data.user.id;
 
     const owns = await prisma.event.findFirst({
